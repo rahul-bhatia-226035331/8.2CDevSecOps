@@ -19,6 +19,17 @@ pipeline {
    steps {
     bat 'npm test || exit /b 0'
    }
+
+   post {
+    always {
+     emailext(
+      subject: 'Run Tests Stage Completed',
+      body: 'Run Tests stage has completed successfully. Please find attached logs.',
+      to: 'rahulbhatia76b@gmail.com',
+      attachLog: true
+     )
+    }
+   }
   }
 
   stage('Generate Coverage Report') {
@@ -30,6 +41,17 @@ pipeline {
   stage('NPM Audit (Security Scan)') {
    steps {
     bat 'npm audit || exit /b 0'
+   }
+
+   post {
+    always {
+     emailext(
+      subject: 'Security Scan Stage Completed',
+      body: 'Security scan stage has completed. Please find attached logs.',
+      to: 'rahulbhatia76b@gmail.com',
+      attachLog: true
+     )
+    }
    }
   }
 
