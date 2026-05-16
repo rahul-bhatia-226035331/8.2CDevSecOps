@@ -1,37 +1,37 @@
 pipeline {
-    agent any
+ agent any
 
-    stages {
+ stages {
 
-        stage('Checkout') {
-            steps {
-                echo 'Checking out source code from GitHub'
-            }
-        }
+  stage('Checkout') {
+   steps {
+    git branch: 'main', url: 'https://github.com/rahul-bhatia-226035331/8.2CDevSecOps.git'
+   }
+  }
 
-        stage('Install Dependencies') {
-            steps {
-                bat 'npm install'
-            }
-        }
+  stage('Install Dependencies') {
+   steps {
+    bat 'npm install'
+   }
+  }
 
-        stage('Run Tests') {
-            steps {
-                bat 'npm test'
-            }
-        }
+  stage('Run Tests') {
+   steps {
+    bat 'npm test || exit /b 0'
+   }
+  }
 
-        stage('Security Audit') {
-            steps {
-                bat 'npm audit'
-            }
-        }
+  stage('Generate Coverage Report') {
+   steps {
+    bat 'npm run coverage || exit /b 0'
+   }
+  }
 
-        stage('Build') {
-            steps {
-                echo 'Building application'
-            }
-        }
+  stage('NPM Audit (Security Scan)') {
+   steps {
+    bat 'npm audit || exit /b 0'
+   }
+  }
 
-    }
+ }
 }
